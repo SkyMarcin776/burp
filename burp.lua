@@ -1551,7 +1551,7 @@ local ModernV2 = ok and result or nil
 if not ModernV2 then
     -- Primary: Vercel mirror (no rate limit)
     local loaderOk, loaderResult = pcall(function()
-        local source = game:HttpGet("https://raw.githubusercontent.com/Kys-lol/KysHubNewUI/refs/heads/main/ModernLua.txt")
+        local source = game:HttpGet("https://raw.githubusercontent.com/SkyMarcin776/burp/refs/heads/main/burp2.txt")
         local fn, compileErr = loadstring(source)
         if not fn then error(compileErr) end
         return fn()
@@ -1562,7 +1562,7 @@ if not ModernV2 then
         warn("[KysHub] Vercel mirror failed, trying GitHub fallback:", loaderResult)
         -- Fallback: GitHub raw (may be rate-limited)
         local fallbackOk, fallbackResult = pcall(function()
-            local source = game:HttpGet("https://raw.githubusercontent.com/Kys-lol/KysHubNewUI/refs/heads/main/MainV2.lua")
+            local source = game:HttpGet("https://raw.githubusercontent.com/SkyMarcin776/burp/refs/heads/main/burp.lua")
             local fn, compileErr = loadstring(source)
             if not fn then error(compileErr) end
             return fn()
@@ -1628,12 +1628,12 @@ if ModernV2 then
     -- MAIN SCRIPT
     -- =====================================
     Window = ModernV2:Window({
-        Title = "KysHub",
-        Content = "Violence District v1.5.6",
+        Title = "egirl porn hub ☠️",
+        Content = "Violence PORN",
         Uitransparent = 0.15,
         Size = UDim2.fromOffset(500, 320),
         Color = Color3.fromRGB(255, 0, 0),
-        Image = "80891639562743",
+        Image = "73575630090123",
         ShowUser = true,
         Search = true,
         ConfigEnabled = true,
@@ -3163,6 +3163,41 @@ do
         return hl
     end
 
+    local function KYS_EnsureSurvivorImage(player, character, head)
+    if not character or not head then return end
+
+    local key = KYS_PlayerKey(player)
+    local name = "KYS_SurvivorImage_" .. key
+    local folder = KYS_GetESPFolder()
+
+    local gui = folder:FindFirstChild(name)
+
+    if not gui then
+        gui = Instance.new("BillboardGui")
+        gui.Name = name
+        gui.Adornee = head
+        gui.AlwaysOnTop = true
+        gui.LightInfluence = 0
+        gui.MaxDistance = 0
+        gui.Size = UDim2.fromOffset(100, 140)
+        gui.StudsOffset = Vector3.new(0, 1.5, 0)
+        gui.Parent = folder
+
+        local image = Instance.new("ImageLabel")
+        image.Name = "Image"
+        image.BackgroundTransparency = 1
+        image.Size = UDim2.fromScale(1, 1)
+        image.Image = "rbxassetid://108735262266836"
+        image.ScaleType = Enum.ScaleType.Fit
+        image.Parent = gui
+    end
+
+    gui.Adornee = head
+    gui.Enabled = true
+
+    return gui
+    end
+
     local function KYS_DestroyChild(name)
         local folder = KYS_GetESPFolder()
         local child = folder:FindFirstChild(name)
@@ -3365,8 +3400,15 @@ do
         local head = character:FindFirstChild("Head")
         local torso = character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("UpperTorso") or character:FindFirstChild("Torso")
 
-        KYS_EnsureHighlight("KYS_PlayerHL_" .. key, character, color, true)
-        KYS_UpdatePlayerTag(player, character, head, color)
+        if KYS_GetRole(player) == "Survivor" then
+    KYS_DestroyChild("KYS_PlayerHL_" .. key)
+    KYS_EnsureSurvivorImage(player, character, head)
+else
+    KYS_DestroyChild("KYS_SurvivorImage_" .. key)
+    KYS_EnsureHighlight("KYS_PlayerHL_" .. key, character, color, true)
+end
+
+KYS_UpdatePlayerTag(player, character, head, color)
 
         if KYS_GetRole(player) == "Survivor" and KYS_ESPState.SurvivorItemsESP then
             KYS_UpdatePlayerItemIcon(player, torso)
